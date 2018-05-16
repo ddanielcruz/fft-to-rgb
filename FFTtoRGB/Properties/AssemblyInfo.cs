@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MicrophoneSample")]
+[assembly: AssemblyTitle("FFTtoRGB")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MicrophoneSample")]
+[assembly: AssemblyProduct("FFTtoRGB")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("a80d25d3-0f62-48d1-a29b-be3132812dc8")]
+[assembly: Guid("e16c1218-38f6-4ade-a9e9-897af2ceb463")]
 
 // Version information for an assembly consists of the following four values:
 //

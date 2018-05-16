@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Numerics;
 using NAudio.Wave;
 
-namespace MicrophoneSample.Models
+namespace FFTtoRGB
 {
     public class FFTProvider
     {
