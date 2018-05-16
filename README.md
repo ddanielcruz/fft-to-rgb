@@ -10,4 +10,4 @@ In this project, we created a program that captures the audio coming from the so
 Initial program based on codes developed by [Scott W Harden](https://github.com/swharden).
 
 ## License
-None (*Yet*).
+MIT License.
