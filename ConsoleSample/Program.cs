@@ -1,5 +1,6 @@
 ﻿using System;
 using FFTtoRGB;
+using FFTtoRGB.FFT;
 
 namespace ConsoleSample
 {
@@ -7,10 +8,11 @@ namespace ConsoleSample
     {
         static void Main(string[] args)
         {
+            var config = new FFTProviderConfig();
+            var generator = new RGBGenerator(config);
             
-            var generator = new RGBGenerator();
-            generator.Run();
-                        
+            generator.Run();                        
+
             Console.ReadKey(true);
         }
     }

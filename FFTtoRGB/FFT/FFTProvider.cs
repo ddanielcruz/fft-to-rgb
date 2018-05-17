@@ -76,17 +76,31 @@ namespace FFTtoRGB.FFT
         /// Desired percentage of the full FFT and Frequencies arrays to be returned.
         /// This value must be higher than zero and lesser or equal than one.
         /// </summary>
-        public double SampleTake 
+        public double SampleTake => Convert(Config.SampleTake);
+        public void SetSampleTake(SampleTakeMeasure measure) => Config.SampleTake = measure;
+
+        /// <summary>
+        /// Convert SampleTakeMeasure to double
+        /// </summary>
+        private double Convert(SampleTakeMeasure measure)
         {
-            get => Config.SampleTake;
-            set
+            switch (measure)
             {
-                if (value > 0 && value <= 1)
-                    Config.SampleTake = value;
-                else
-                    throw new Exception("Invalid value. The Sample Take must be higher than zero and lesser or equal than one.");
+                case SampleTakeMeasure.Full:
+                    return 1.0;
+                case SampleTakeMeasure.Half:
+                    return 0.5;
+                case SampleTakeMeasure.Quarter:
+                    return 0.25;
+                case SampleTakeMeasure.Eighth:
+                    return 0.125;
+                case SampleTakeMeasure.Sixteenth:
+                    return 0.0625;
+                default:
+                    return 0.5;
             }
         }
+        
 
         public FFTProvider()
         {
@@ -136,10 +150,10 @@ namespace FFTtoRGB.FFT
         }
 
         // Self-explanatory methods
-        public void StartRecording()
+        public void StartRecording(int milliseconds = 500)
         {
             WI.StartRecording();
-            Thread.Sleep(500);   // Wait few time to start recording. Otherwise the first values will be NaN
+            Thread.Sleep(milliseconds);   // Wait few time to start recording. Otherwise the first values will be NaN
         }
         public void StopRecording() => WI.StopRecording();
         public void Dispose() => WI.Dispose();
@@ -159,9 +173,9 @@ namespace FFTtoRGB.FFT
                 throw new Exception("Invalid Data.");
 
             int BPP = SampleResolution / 8;   // Bytes per point
-            int size = frames.Length / BPP;
+            int size = (int)Math.Floor((frames.Length / BPP) * SampleTake);
 
-            var data = new double[size];            
+            var data = new double[size];
 
             for (int i = 0; i < size; i++)
             {
@@ -172,7 +186,7 @@ namespace FFTtoRGB.FFT
             }
 
             // TODO Validate SampleTake feature. It would be more clever to set the size to the desired Take instead of calculating the FFT for the whole Buffer.
-            return Calc.FFT(data).Take((int)Math.Floor(size * SampleTake)).ToArray();
+            return Calc.FFT(data);
         }
 
         /// <summary>
@@ -182,7 +196,7 @@ namespace FFTtoRGB.FFT
         public double[] GetFreqArray()
         {
             int BPP = SampleResolution / 8;
-            int size = BufferSize / BPP;
+            int size = (int)Math.Floor((BufferSize / BPP) * SampleTake);
 
             var freq = new double[size];
 
@@ -190,7 +204,7 @@ namespace FFTtoRGB.FFT
                 freq[i] = (double)i / size * Rate / 1000.0; // kHz
 
             // TODO The same of the FFT
-            return freq.Take((int)Math.Floor(size * SampleTake)).ToArray();
+            return freq;
         }
 
         /// <summary>

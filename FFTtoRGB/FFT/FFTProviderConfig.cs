@@ -51,21 +51,9 @@ namespace FFTtoRGB.FFT
         /// </summary>
         public int SampleResolution { get; set; } = 16;
 
-        private double _sampleTake = 0.5;
         /// <summary>
         /// Desired percentage of the full FFT and Frequencies arrays to be returned.
-        /// This value must be higher than zero and lesser or equal than one.
         /// </summary>
-        public double SampleTake
-        {
-            get => _sampleTake;
-            set
-            {
-                if (value > 0 && value <= 1)
-                    _sampleTake = value;
-                else
-                    throw new Exception("Invalid value. The Sample Take must be higher than zero and lesser or equal than one.");
-            }
-        }
+        public SampleTakeMeasure SampleTake { get; set; } = SampleTakeMeasure.Half;
     }
 }
