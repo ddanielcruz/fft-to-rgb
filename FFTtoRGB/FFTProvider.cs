@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Numerics;
 using NAudio.Wave;
 
 namespace FFTtoRGB
@@ -12,6 +11,8 @@ namespace FFTtoRGB
         private int Rate { get; set; } = 48000;
         private int Channels { get; set; } = 2;
         private int BufferSize { get; set; } = (int)Math.Pow(2, 11);
+
+        public int SampleResolution { get; set; } = 16;
 
         public FFTProvider(int deviceNumber = 0)
         {
@@ -56,30 +57,48 @@ namespace FFTtoRGB
         /// <summary>
         /// Read the buffer and return the FFT
         /// </summary>
-        /// <returns></returns>
+        /// <returns>FFT array</returns>
         public double[] Read()
         {
-            // TODO Implement Read method returning FFT(bufferData)
-            throw new NotImplementedException();
+            int frameSize = BufferSize;
+            var frames = new byte[frameSize];
+
+            BWP.Read(frames, 0, frameSize);
+
+            if (frames.Length == 0 || frames[frameSize - 2] == 0)
+                throw new Exception("Invalid Data.");
+
+            int BPP = SampleResolution / 8;   // Bytes per point
+            int size = frames.Length / BPP;
+
+            var data = new double[size];            
+
+            for (int i = 0; i < size; i++)
+            {
+                byte hByte = frames[i * 2 + 1];
+                byte lByte = frames[i * 2 + 0];
+
+                data[i] = (short)((hByte << 8) | lByte);
+            }
+
+            return Calc.FFT(data);
         }
-        
+
         /// <summary>
-        /// Calculate FFT
+        /// Get frequencies array
         /// </summary>
-        private double[] FFT(double[] data)
+        /// <returns>Frequencies array</returns>
+        public double[] GetFreqArray()
         {
-            double[] fft = new double[data.Length];
-            Complex[] fftComplex = new Complex[data.Length];
+            int BPP = SampleResolution / 8;
+            int size = BufferSize / BPP;
 
-            for (int i = 0; i < data.Length; i++)
-                fftComplex[i] = new Complex(data[i], 0.0);
+            var freq = new double[size];
 
-            Accord.Math.FourierTransform.FFT(fftComplex, Accord.Math.FourierTransform.Direction.Forward);
+            for (int i = 0; i < size; i++)
+                freq[i] = (double)i / size * Rate / 1000.0; // kHz
 
-            for (int i = 0; i < data.Length; i++)
-                fft[i] = Math.Log10(fftComplex[i].Magnitude);            
-
-            return fft;
+            return freq;
         }
     }
 }
