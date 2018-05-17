@@ -13,7 +13,7 @@ namespace FFTtoRGB
         private WaveInEvent WI { get; set; }
         
         /// <summary>
-        /// 
+        /// Buffer to store the WaveInEvent samples
         /// </summary>
         private BufferedWaveProvider BWP { get; set; }
 
