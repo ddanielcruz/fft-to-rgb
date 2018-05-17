@@ -5,6 +5,11 @@ using NAudio.Wave;
 
 namespace FFTtoRGB
 {
+    /// <summary>
+    /// Provides de FFT array and its frequencies. For now, it's working with the WaveInEvent using
+    /// the device number 0 (usually the microphone). Later, the idea is to get the audio direct of
+    /// the Window's digital output.
+    /// </summary>
     public class FFTProvider
     {
         /// <summary>
