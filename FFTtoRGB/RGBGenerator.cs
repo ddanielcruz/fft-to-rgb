@@ -4,6 +4,7 @@ using FFTtoRGB.FFT;
 using FFTtoRGB.Color;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Diagnostics;
 
 namespace FFTtoRGB
 {
@@ -109,11 +110,14 @@ namespace FFTtoRGB
 
                 while (!TokenSource.IsCancellationRequested)
                 {
-                    var FFT = FFTProvider.Read();
+                    var NRM = NormalizeArray(FFTProvider.Read());
+
+                    if (double.IsInfinity(NRM[0]) || double.IsNaN(NRM[0]))
+                        continue;
 
                     try
                     {
-                        var color = GenerateColor(NormalizeArray(FFT));
+                        var color = GenerateColor(NRM);
                         Console.WriteLine(color);
                         
                         // TODO Send the generated color to Arduino
