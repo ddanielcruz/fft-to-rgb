@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Linq;
 using NAudio.Wave;
 
 namespace FFTtoRGB
 {
     public class FFTProvider
     {
-        private WaveIn WI { get; set; }
+        private WaveInEvent WI { get; set; }
         private BufferedWaveProvider BWP { get; set; }
 
         private int Rate { get; set; } = 48000;
@@ -31,7 +32,7 @@ namespace FFTtoRGB
 
         private void InitWaveIn(int deviceNumber = 0)
         {
-            WI = new WaveIn
+            WI = new WaveInEvent
             {
                 DeviceNumber = deviceNumber,
                 WaveFormat = new WaveFormat(Rate, Channels),
@@ -65,7 +66,8 @@ namespace FFTtoRGB
 
             BWP.Read(frames, 0, frameSize);
 
-            if (frames.Length == 0 || frames[frameSize - 2] == 0)
+            System.Diagnostics.Debug.WriteLine(frames.Length);
+            if (frames.Length == 0)
                 throw new Exception("Invalid Data.");
 
             int BPP = SampleResolution / 8;   // Bytes per point
@@ -81,7 +83,7 @@ namespace FFTtoRGB
                 data[i] = (short)((hByte << 8) | lByte);
             }
 
-            return Calc.FFT(data);
+            return Calc.FFT(data).Take(size / 2).ToArray();
         }
 
         /// <summary>
@@ -98,7 +100,7 @@ namespace FFTtoRGB
             for (int i = 0; i < size; i++)
                 freq[i] = (double)i / size * Rate / 1000.0; // kHz
 
-            return freq;
+            return freq.Take(size / 2).ToArray();
         }
     }
 }
