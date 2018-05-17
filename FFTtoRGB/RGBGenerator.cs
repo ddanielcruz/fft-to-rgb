@@ -20,14 +20,23 @@ namespace FFTtoRGB
         /// </summary>
         private double[] Frequencies { get; set; }
 
+        /// <summary>
+        /// RGB colors distribution 
+        /// </summary>
+        public ColorSettings Settings { get; set; }
+
         public RGBGenerator()
         {
             FFTProvider = new FFTProvider();
+            Settings = new ColorSettings();
+
             Frequencies = FFTProvider.GetFreqArray();
         }
         public RGBGenerator(FFTProviderConfig config)
         {
             FFTProvider = new FFTProvider(config);
+            Settings = new ColorSettings();
+
             Frequencies = FFTProvider.GetFreqArray();
         }
 
