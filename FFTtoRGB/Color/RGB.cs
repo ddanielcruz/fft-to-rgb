@@ -5,39 +5,39 @@
     /// </summary>
     public class RGB
     {
-        private uint _red;
-        public uint Red
+        private int _red = 0;
+        public int Red
         {
             get => _red;
             set
             {
-                if (value <= 255)
+                if (value >= 0 && value <= 255)
                     _red = value;
                 else
                     throw new InvalidColorValueException();
             }
         }
 
-        private uint _green;
-        public uint Green
+        private int _green = 0;
+        public int Green
         {
             get => _green;
             set
             {
-                if (value <= 255)
+                if (value >= 0 && value <= 255)
                     _green = value;
                 else
                     throw new InvalidColorValueException();
             }
         }
 
-        private uint _blue;
-        public uint Blue
+        private int _blue;
+        public int Blue
         {
             get => _blue;
             set
             {
-                if (value <= 255)
+                if (value >= 0 && value <= 255)
                     _blue = value;
                 else
                     throw new InvalidColorValueException();
@@ -47,11 +47,12 @@
         public RGB()
         {
         }
-        public RGB(uint red, uint green, uint blue)
+        public RGB(int red, int green, int blue)
         {
             Red = red;
             Green = green;
             Blue = blue;
         }
+
     }
 }
