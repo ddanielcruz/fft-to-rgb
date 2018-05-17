@@ -47,6 +47,8 @@
         public ColorSettings()
         {
         }
+
+        public ColorSettings(Order order) => Order = order;
         public ColorSettings(Order order, double x, double y)
         {
             Order = order;

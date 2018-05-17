@@ -77,18 +77,24 @@ namespace FFTtoRGB
         /// <returns>Generated RGB color</returns>
         public RGB GenerateColor(double[] FFT)
         {
-            if (FFT.Max() > MaxValue)
-                MaxValue = FFT.Max();
-
             int pX = (int)Math.Floor(FFT.Length * Settings.X);
             int pY = (int)Math.Floor(FFT.Length * Settings.Y);
 
             // Ordered values
-            var X = (int)Math.Ceiling(Calc.SubArray(FFT, 0, pX).Average().Map(0, MaxValue, 0, 255));
-            var Y = (int)Math.Ceiling(Calc.SubArray(FFT, pX, pY - pX).Average().Map(0, MaxValue, 0, 255));
-            var Z = (int)Math.Ceiling(Calc.SubArray(FFT, pY, FFT.Length - pY).Average().Map(0, MaxValue, 0, 255));
+            var X = Calc.SubArray(FFT, 0, pX).Average();
+            var Y = Calc.SubArray(FFT, pX, pY - pX).Average();
+            var Z = Calc.SubArray(FFT, pY, FFT.Length - pY).Average();
 
-            return new RGB(X, Y, Z, Settings.Order);
+            var max = (new double[] { X, Y, Z }).Max();
+            if (max > MaxValue)
+                MaxValue = max;            
+
+            // Map the values
+            var mX = (int)Math.Ceiling(X.Map(0, MaxValue, 0, 255));
+            var mY = (int)Math.Ceiling(Y.Map(0, MaxValue, 0, 255));
+            var mZ = (int)Math.Ceiling(Z.Map(0, MaxValue, 0, 255));
+
+            return new RGB(mX, mY, mZ, Settings.Order);
         }
 
         /// <summary>
