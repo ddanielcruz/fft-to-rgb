@@ -1,23 +1,45 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using NAudio.Wave;
 
 namespace FFTtoRGB
 {
     public class FFTProvider
     {
+        /// <summary>
+        /// Audio Input
+        /// </summary>
         private WaveInEvent WI { get; set; }
+        
+        /// <summary>
+        /// 
+        /// </summary>
         private BufferedWaveProvider BWP { get; set; }
 
-        private int Rate { get; set; } = 48000;
-        private int Channels { get; set; } = 2;
-        private int BufferSize { get; set; } = (int)Math.Pow(2, 11);
+        /// <summary>
+        /// Device's rate
+        /// </summary>
+        public int Rate { get; private set; } = 48000;
+        
+        /// <summary>
+        /// Device's number of channels
+        /// </summary>
+        public int Channels { get; private set; } = 2;
 
+        /// <summary>
+        /// Size of the BufferedWaveProvider. It must be a multiple of 2
+        /// </summary>
+        public int BufferSize { get; set; } = (int)Math.Pow(2, 11);
+
+        /// <summary>
+        /// teste
+        /// </summary>
         public int SampleResolution { get; set; } = 16;
 
         public FFTProvider(int deviceNumber = 0)
         {
-            InitWaveIn(deviceNumber);
+            InitWaveInEvent(deviceNumber);
             InitBufferedWaveProvider();
         }
         public FFTProvider(int deviceNumber, int rate, int channels, int bufferSize)
@@ -26,11 +48,15 @@ namespace FFTtoRGB
             Channels = channels;
             BufferSize = bufferSize;
 
-            InitWaveIn(deviceNumber);
+            InitWaveInEvent(deviceNumber);
             InitBufferedWaveProvider();
         }
 
-        private void InitWaveIn(int deviceNumber = 0)
+        /// <summary>
+        /// Initialize the WaveInEvent
+        /// </summary>
+        /// <param name="deviceNumber">Device Number to be listen. Default value is zero.</param>
+        private void InitWaveInEvent(int deviceNumber = 0)
         {
             WI = new WaveInEvent
             {
@@ -40,8 +66,15 @@ namespace FFTtoRGB
             };
             WI.DataAvailable += OnDataAvailable;
         }
+
+        /// <summary>
+        /// EventHandler to add samples to the BufferedWaveProvider
+        /// </summary>
         private void OnDataAvailable(object sender, WaveInEventArgs e) => BWP.AddSamples(e.Buffer, 0, e.BytesRecorded);
 
+        /// <summary>
+        /// Initialize the BufferedWaveProvider
+        /// </summary>
         private void InitBufferedWaveProvider()
         {
             BWP = new BufferedWaveProvider(WI.WaveFormat)
@@ -51,7 +84,11 @@ namespace FFTtoRGB
             };
         }
 
-        public void StartRecording() => WI.StartRecording();
+        public void StartRecording()
+        {
+            WI.StartRecording();
+            Thread.Sleep(50);   // Wait few time to start recording. Otherwise the first values will be NaN
+        }
         public void StopRecording() => WI.StopRecording();
         public void Dispose() => WI.Dispose();
 
@@ -66,7 +103,6 @@ namespace FFTtoRGB
 
             BWP.Read(frames, 0, frameSize);
 
-            System.Diagnostics.Debug.WriteLine(frames.Length);
             if (frames.Length == 0)
                 throw new Exception("Invalid Data.");
 
@@ -103,6 +139,12 @@ namespace FFTtoRGB
             return freq.Take(size / 2).ToArray();
         }
 
+        /// <summary>
+        /// Normalize the FFT array, making all values positive, 
+        /// adding the abs of the min value to all the others
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         private double[] NormalizeArray(double[] data)
         {
             var minValue = data.Min();
