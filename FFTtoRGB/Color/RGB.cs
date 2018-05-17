@@ -31,7 +31,7 @@
             }
         }
 
-        private int _blue;
+        private int _blue = 0;
         public int Blue
         {
             get => _blue;
@@ -53,6 +53,46 @@
             Green = green;
             Blue = blue;
         }
+        public RGB(int X, int Y, int Z, Order order)
+        {
+            switch (order)
+            {
+                case Order.RGB:
+                    Red = X;
+                    Green = Y;
+                    Blue = Z;
+                    break;
 
+                case Order.RBG:
+                    Red = X;
+                    Blue = Y;
+                    Green = Z;
+                    break;
+
+                case Order.GRB:
+                    Green = X;
+                    Red = Y;
+                    Blue = Z;
+                    break;
+
+                case Order.GBR:
+                    Green = X;
+                    Blue = Y;
+                    Red = Z;
+                    break;
+
+                case Order.BRG:
+                    Blue = X;
+                    Red = Y;
+                    Green = Z;
+                    break;
+
+                case Order.BGR:
+                    Blue = X;
+                    Green = Y;
+                    Red = Z;
+                    break;
+            }
+        }
     }
 }
