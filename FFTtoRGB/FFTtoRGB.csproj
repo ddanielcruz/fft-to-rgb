@@ -58,8 +58,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FFTProviderConfig.cs" />
-    <Compile Include="FFTProvider.cs" />
+    <Compile Include="Color\RGB.cs" />
+    <Compile Include="Color\InvalidColorValueException.cs" />
+    <Compile Include="FFT\FFTProviderConfig.cs" />
+    <Compile Include="FFT\FFTProvider.cs" />
     <Compile Include="Calc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RGBGenerator.cs" />

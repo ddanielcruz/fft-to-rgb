@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FFTtoRGB
+namespace FFTtoRGB.FFT
 {
     /// <summary>
     /// FFT Provider's config.

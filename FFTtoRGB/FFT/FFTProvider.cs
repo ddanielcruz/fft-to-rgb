@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading;
 using NAudio.Wave;
 
-namespace FFTtoRGB
+namespace FFTtoRGB.FFT
 {
     /// <summary>
     /// Provides the FFT array and its frequencies. For now, it's working with the WaveInEvent using

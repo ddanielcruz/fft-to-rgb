@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using FFTtoRGB.FFT;
+using FFTtoRGB.Color;
 
 namespace FFTtoRGB
 {
@@ -47,6 +49,16 @@ namespace FFTtoRGB
             }
 
             return data;
+        }
+
+        /// <summary>
+        /// Calculate the RGB color based on the FFT array
+        /// </summary>
+        /// <param name="FFT">FFT double array</param>
+        /// <returns>Generated RGB color</returns>
+        public RGB GetColor(double[] FFT)
+        {
+            throw new NotImplementedException();
         }
     }
 }
