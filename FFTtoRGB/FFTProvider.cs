@@ -172,7 +172,7 @@ namespace FFTtoRGB
             }
 
             // TODO Validate SampleTake feature. It would be more clever to set the size to the desired Take instead of calculating the FFT for the whole Buffer.
-            return NormalizeArray(Calc.FFT(data)).Take((int)Math.Floor(size * SampleTake)).ToArray();
+            return Calc.FFT(data).Take((int)Math.Floor(size * SampleTake)).ToArray();
         }
 
         /// <summary>
@@ -194,23 +194,13 @@ namespace FFTtoRGB
         }
 
         /// <summary>
-        /// Normalize the FFT array, making all values positive, 
-        /// adding the abs of the min value to all the others
+        /// Update the configuration of the FFT provider
         /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        private double[] NormalizeArray(double[] data)
+        /// <param name="config">Configuration to be set</param>
+        public void UpdateConfig(FFTProviderConfig config)
         {
-            var minValue = data.Min();
-
-            if (minValue < 0)
-            {
-                var N = Math.Abs(minValue);
-                for (int i = 0; i < data.Length; i++)
-                    data[i] += N;
-            }
-
-            return data;
+            // TODO Implement UpdateConfig logic, stopping and disposing the WaveInEvent
+            throw new NotImplementedException();
         }
     }
 }
