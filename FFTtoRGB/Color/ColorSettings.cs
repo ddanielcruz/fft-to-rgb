@@ -10,15 +10,39 @@
         /// </summary>
         public Order Order { get; set; } = Order.RGB;
 
+        private double _x = 0.33;
         /// <summary>
-        /// First limit value, used to take values from the FFT array from zero to (Lenght * X) position
-        /// </summary>
-        public double X { get; set; } = 33.3;
+        /// First limit value, used to take values from the FFT array from zero to (Length * X) position
+        /// The value must be between zero and 1.
+        /// </summary
+        public double X
+        {
+            get => _x;
+            set
+            {
+                if (value >= 0 && value <= 1)
+                    _x = value;
+                else
+                    throw new InvalidSettingsValueException();
+            }
+        }
 
+        private double _y = 0.66;
         /// <summary>
-        /// Second limit value, used to take values from the FFT array from (Lenght * X) to (Lenght * Y) position
+        /// Second limit value, used to take values from the FFT array from (Length * X) to (Length * Y) position.
+        /// The value must be between zero and 1.
         /// </summary>
-        public double Y { get; set; } = 66.6;
+        public double Y
+        {
+            get => _y;
+            set
+            {
+                if (value >= 0 && value <= 1)
+                    _y = value;
+                else
+                    throw new InvalidSettingsValueException();
+            }
+        }
 
         public ColorSettings()
         {
