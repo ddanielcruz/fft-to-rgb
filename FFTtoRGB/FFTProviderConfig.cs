@@ -22,10 +22,29 @@ namespace FFTtoRGB
         /// </summary>
         public int Channels { get; set; } = 2;
 
+        private int _bufferSize = (int)Math.Pow(2, 11);
         /// <summary>
-        /// Size of the BufferedWaveProvider. It must be a multiple of 2
+        /// Size of the BufferedWaveProvider. It must be a power of 2
+        /// </summary
+        public int BufferSize
+        {
+            get => _bufferSize;
+            set
+            {
+                // TODO Check if value is a power of 2
+                if (IsPowerOfTwo(value))
+                    _bufferSize = value;
+                else
+                    throw new Exception("Invalid value. The value must be a power of 2.");
+            }
+        }
+
+        /// <summary>
+        /// Check if value is a power of 2
         /// </summary>
-        public int BufferSize { get; set; } = (int)Math.Pow(2, 11);
+        /// <param name="value">Number to be checked</param>
+        /// <returns>Whether the value is a power of two</returns>
+        bool IsPowerOfTwo(int value) => (value != 0) && ((value & (value - 1)) == 0);
 
         /// <summary>
         /// Audio's sample resolution
