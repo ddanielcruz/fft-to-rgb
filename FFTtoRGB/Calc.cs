@@ -24,5 +24,20 @@ namespace FFTtoRGB
 
             return fft;
         }
+
+        /// <summary>
+        /// Get the sub-array from data
+        /// </summary>
+        /// <param name="data">Source array</param>
+        /// <param name="index">Starting position</param>
+        /// <param name="length">New Array's length</param>
+        /// <returns>Sub-array from data</returns>
+        public static T[] SubArray<T>(T[] data, int index, int length)
+        {
+            T[] result = new T[length];
+            Array.Copy(data, index, result, 0, length);
+
+            return result;
+        }
     }
 }
