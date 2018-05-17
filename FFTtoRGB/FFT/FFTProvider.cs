@@ -139,7 +139,7 @@ namespace FFTtoRGB.FFT
         public void StartRecording()
         {
             WI.StartRecording();
-            Thread.Sleep(50);   // Wait few time to start recording. Otherwise the first values will be NaN
+            Thread.Sleep(500);   // Wait few time to start recording. Otherwise the first values will be NaN
         }
         public void StopRecording() => WI.StopRecording();
         public void Dispose() => WI.Dispose();
