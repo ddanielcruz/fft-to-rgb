@@ -38,7 +38,7 @@ namespace FFTtoRGB
         public int BufferSize { get; set; } = (int)Math.Pow(2, 11);
 
         /// <summary>
-        /// teste
+        /// Audio's sample resolution
         /// </summary>
         public int SampleResolution { get; set; } = 16;
 
