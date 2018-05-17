@@ -83,7 +83,7 @@ namespace FFTtoRGB
                 data[i] = (short)((hByte << 8) | lByte);
             }
 
-            return Calc.FFT(data).Take(size / 2).ToArray();
+            return NormalizeArray(Calc.FFT(data)).Take(size / 2).ToArray();
         }
 
         /// <summary>
@@ -101,6 +101,20 @@ namespace FFTtoRGB
                 freq[i] = (double)i / size * Rate / 1000.0; // kHz
 
             return freq.Take(size / 2).ToArray();
+        }
+
+        private double[] NormalizeArray(double[] data)
+        {
+            var minValue = data.Min();
+
+            if (minValue < 0)
+            {
+                var N = Math.Abs(minValue);
+                for (int i = 0; i < data.Length; i++)
+                    data[i] += N;
+            }
+
+            return data;
         }
     }
 }

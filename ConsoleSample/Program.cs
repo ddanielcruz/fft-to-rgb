@@ -11,23 +11,15 @@ namespace ConsoleSample
             var prov = new FFTProvider();
             prov.StartRecording();
             
-            //var fft = prov.Read();
-            //prov.StopRecording();
-
             var freq = prov.GetFreqArray();
-
-            //Console.WriteLine(fft.Length);
-            //Console.WriteLine(freq.Length);
-
-            //for (int i = 0; i < freq.Length; i += 8)
-            //{
-            //    Console.WriteLine($"[{fft[i]}, {freq[i]}]");
-            //}
 
             for (int i = 0; i < 50; i++)
             {
                 var FFT = prov.Read();
-                Console.WriteLine(FFT[0]);
+
+                Console.WriteLine($"[{FFT[0]}, {freq[0]}]");
+                Console.WriteLine($"[{FFT[FFT.Length / 2]}, {freq[FFT.Length / 2]}]");
+                Console.WriteLine($"[{FFT[FFT.Length - 1]}, {freq[FFT.Length - 1]}]\n");
 
                 Thread.Sleep(500);
             }
