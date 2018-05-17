@@ -31,7 +31,6 @@ namespace FFTtoRGB.FFT
             get => _bufferSize;
             set
             {
-                // TODO Check if value is a power of 2
                 if (IsPowerOfTwo(value))
                     _bufferSize = value;
                 else

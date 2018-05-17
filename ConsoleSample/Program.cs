@@ -14,6 +14,7 @@ namespace ConsoleSample
             generator.Run();                        
 
             Console.ReadKey(true);
+            generator.Stop();
         }
     }
 }

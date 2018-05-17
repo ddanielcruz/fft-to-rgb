@@ -185,7 +185,6 @@ namespace FFTtoRGB.FFT
                 data[i] = (short)((hByte << 8) | lByte);
             }
 
-            // TODO Validate SampleTake feature. It would be more clever to set the size to the desired Take instead of calculating the FFT for the whole Buffer.
             return Calc.FFT(data);
         }
 
@@ -203,7 +202,6 @@ namespace FFTtoRGB.FFT
             for (int i = 0; i < size; i++)
                 freq[i] = (double)i / size * Rate / 1000.0; // kHz
 
-            // TODO The same of the FFT
             return freq;
         }
 

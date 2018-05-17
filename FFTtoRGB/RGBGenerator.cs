@@ -18,6 +18,11 @@ namespace FFTtoRGB
         private FFTProvider FFTProvider { get; set; }
 
         /// <summary>
+        /// FFT Provider's config
+        /// </summary>
+        private FFTProviderConfig FFTProviderSettings { get; set; }
+
+        /// <summary>
         /// Frequencies array
         /// </summary>
         private double[] Frequencies { get; set; }
@@ -32,16 +37,13 @@ namespace FFTtoRGB
         /// </summary>
         public double MaxValue { get; private set; } = 0;
 
-        public RGBGenerator()
-        {
-            FFTProvider = new FFTProvider();
-            Settings = new ColorSettings();
+        public RGBGenerator() => InitGenerator(new FFTProviderConfig());
+        public RGBGenerator(FFTProviderConfig config) => InitGenerator(config);
 
-            Frequencies = FFTProvider.GetFreqArray();
-        }
-        public RGBGenerator(FFTProviderConfig config)
+        private void InitGenerator(FFTProviderConfig config)
         {
             FFTProvider = new FFTProvider(config);
+            FFTProviderSettings = config;
             Settings = new ColorSettings();
 
             Frequencies = FFTProvider.GetFreqArray();
@@ -118,6 +120,7 @@ namespace FFTtoRGB
                     }
                     catch (InvalidColorValueException)
                     {
+                        // TODO Fix Exception
                         break;
                     }
                     Thread.Sleep(time);
