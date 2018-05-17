@@ -94,5 +94,7 @@
                     break;
             }
         }
+
+        public override string ToString() => $"[{Red}, {Green}, {Blue}]";
     }
 }

@@ -9,14 +9,8 @@ namespace ConsoleSample
         {
             
             var generator = new RGBGenerator();
-            generator.Start();
-
-            var FFT = generator.Read();
-
-            var color = generator.GenerateColor(FFT);
-
-            generator.Stop();
-            generator.Dispose();
+            generator.Run();
+                        
             Console.ReadKey(true);
         }
     }

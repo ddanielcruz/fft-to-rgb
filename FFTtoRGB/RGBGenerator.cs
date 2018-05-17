@@ -2,7 +2,8 @@
 using System.Linq;
 using FFTtoRGB.FFT;
 using FFTtoRGB.Color;
-using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace FFTtoRGB
 {
@@ -73,8 +74,6 @@ namespace FFTtoRGB
         /// <returns>Generated RGB color</returns>
         public RGB GenerateColor(double[] FFT)
         {
-            FFT = NormalizeArray(FFT);
-
             if (FFT.Max() > MaxValue)
                 MaxValue = FFT.Max();
 
@@ -89,14 +88,44 @@ namespace FFTtoRGB
             return new RGB(X, Y, Z, Settings.Order);
         }
 
-        private double[] CalculateAverage(double[] data)
+        /// <summary>
+        /// CancellationTokenSource to control the task
+        /// </summary>
+        private CancellationTokenSource TokenSource { get; set; }
+
+        /// <summary>
+        /// Start generating the colors and sending them to the Arduino
+        /// </summary>
+        public void Run()
         {
-            throw new NotImplementedException();
+            TokenSource = new CancellationTokenSource();
+
+            var RunningTask = new Task(() =>
+            {
+                FFTProvider.StartRecording();
+                var time = (int)(FFTProvider.BufferSize / (double)FFTProvider.Rate * 1000);
+
+                while (!TokenSource.IsCancellationRequested)
+                {
+                    var FFT = FFTProvider.Read();
+
+                    try
+                    {
+                        var color = GenerateColor(NormalizeArray(FFT));
+                        Console.WriteLine(color);
+                        
+                        // TODO Send the generated color to Arduino
+                    }
+                    catch (InvalidColorValueException)
+                    {
+                        break;
+                    }
+                    Thread.Sleep(time);
+                }
+            }, TokenSource.Token);
+            RunningTask.Start();
         }
 
-        public void Start() => FFTProvider.StartRecording();
-        public void Stop() => FFTProvider.StopRecording();
-        public void Dispose() => FFTProvider.Dispose();
-        public double[] Read() => FFTProvider.Read();
+        public void Stop() => TokenSource.Cancel();
     }
 }
