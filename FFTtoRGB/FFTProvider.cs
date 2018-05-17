@@ -42,6 +42,24 @@ namespace FFTtoRGB
         /// </summary>
         public int SampleResolution { get; set; } = 16;
 
+        private double _sampleTake = 0.5;
+
+        /// <summary>
+        /// Desired percentage of the full FFT and Frequencies arrays to be returned.
+        /// This value must be higher than zero and lesser or equal than one.
+        /// </summary>
+        public double SampleTake
+        {
+            get => _sampleTake;
+            set
+            {
+                if (value > 0 && value <= 1)
+                    _sampleTake = value;
+                else
+                    throw new Exception("Invalid value. The Sample Take must be higher than zero and lesser or equal than one.");
+            }
+        }
+
         public FFTProvider(int deviceNumber = 0)
         {
             InitWaveInEvent(deviceNumber);
@@ -124,7 +142,8 @@ namespace FFTtoRGB
                 data[i] = (short)((hByte << 8) | lByte);
             }
 
-            return NormalizeArray(Calc.FFT(data)).Take(size / 2).ToArray();
+            // TODO Validate SampleTake feature. It would be more clever to set the size to the desired Take instead of calculating the FFT for the whole Buffer.
+            return NormalizeArray(Calc.FFT(data)).Take(Math.Floor(size * SampleTake)).ToArray();
         }
 
         /// <summary>
@@ -141,7 +160,8 @@ namespace FFTtoRGB
             for (int i = 0; i < size; i++)
                 freq[i] = (double)i / size * Rate / 1000.0; // kHz
 
-            return freq.Take(size / 2).ToArray();
+            // TODO The same of the FFT
+            return freq.Take(Math.Floor(size * SampleTake)).ToArray();
         }
 
         /// <summary>
