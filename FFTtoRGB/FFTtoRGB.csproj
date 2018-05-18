@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Color\ColorSettings.cs" />
     <Compile Include="Color\InvalidSettingsValueException.cs" />
+    <Compile Include="Color\Order.cs" />
     <Compile Include="Color\RGB.cs" />
     <Compile Include="Color\InvalidColorValueException.cs" />
     <Compile Include="FFT\FFTProviderConfig.cs" />
