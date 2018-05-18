@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using FFTtoRGB;
 using FFTtoRGB.Color;
-using FFTtoRGB.FFT;
 
 namespace WFSample
 {
@@ -15,21 +14,57 @@ namespace WFSample
         public MainForm()
         {
             InitializeComponent();
-            var config = new FFTProviderConfig { SampleTake = SampleTakeMeasure.Quarter };
-            Generator = new RGBGenerator(config)
-            {
-                Settings = new ColorSettings(Order.BRG, 0.05, 0.6)
-            };
+
+            Generator = new RGBGenerator();
             Generator.ColorGenerated += OnColorGenerated;
+
+            scrollX.Value = 33;
+            scrollY.Value = 66;
         }
 
         private void OnStartClicked(object sender, EventArgs e) => Generator.Run();
         private void OnStopClicked(object sender, EventArgs e) => Generator.Stop();
+        private void OnNextClicked(object sender, EventArgs e) => Generator.Settings.Order = SwitchColor();
 
-        private void OnColorGenerated(object sender, GenericEventArgs<FFTtoRGB.Color.RGB> e)
+        private Order SwitchColor()
+        {
+            switch (Generator.Settings.Order)
+            {
+                case Order.RGB:
+                    return Order.RBG;
+                case Order.RBG:
+                    return Order.GRB;
+                case Order.GRB:
+                    return Order.GBR;
+                case Order.GBR:
+                    return Order.BRG;
+                case Order.BRG:
+                    return Order.BGR;
+                default:
+                    return Order.RGB;
+            }           
+        }
+
+        private void OnColorGenerated(object sender, GenericEventArgs<RGB> e)
         {
             var color = e.Data;
             panel.BackColor = Color.FromArgb(color.Red, color.Green, color.Blue);
+        }        
+
+        private void OnXScroll(object sender, ScrollEventArgs e)
+        {
+            if (e.NewValue > scrollY.Value)
+                scrollX.Value = e.OldValue;
+            else
+                Generator.Settings.X = scrollX.Value / 100.0;
+        }
+
+        private void OnYScroll(object sender, ScrollEventArgs e)
+        {
+            if (e.NewValue < scrollX.Value)
+                scrollY.Value = e.OldValue;
+            else
+                Generator.Settings.Y = scrollY.Value / 100.0;
         }
     }
 }
