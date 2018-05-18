@@ -32,6 +32,8 @@ namespace FFTtoRGB
         /// </summary>
         private double[] Frequencies { get; set; }
 
+        private bool IsRunning { get; set; } = false;
+
         /// <summary>
         /// RGB colors distribution 
         /// </summary>
@@ -70,11 +72,6 @@ namespace FFTtoRGB
         }
 
         /// <summary>
-        /// Max value generated during the process
-        /// </summary>
-        private double MaxValue { get; set; } = 0;
-
-        /// <summary>
         /// Calculate the RGB color based on the FFT array
         /// </summary>
         /// <param name="FFT">FFT double array</param>
@@ -111,29 +108,34 @@ namespace FFTtoRGB
         /// </summary>
         public void Run()
         {
-            TokenSource = new CancellationTokenSource();
-
-            var RunningTask = new Task(() =>
+            if (!IsRunning)
             {
-                FFTProvider.StartRecording();
-                var time = 50;
+                TokenSource = new CancellationTokenSource();
 
-                while (!TokenSource.IsCancellationRequested)
+                var RunningTask = new Task(() =>
                 {
-                    var NRM = NormalizeArray(FFTProvider.Read());
+                    IsRunning = true;
+                    FFTProvider.StartRecording();
+                    var time = 50;
 
-                    if (double.IsInfinity(NRM[0]) || double.IsNaN(NRM[0]))
-                        continue;
+                    while (!TokenSource.IsCancellationRequested)
+                    {
+                        var NRM = NormalizeArray(FFTProvider.Read());
 
-                    var color = GenerateColor(NRM);
-                    ColorGenerated?.Invoke(this, new GenericEventArgs<RGB>(color));
+                        if (double.IsInfinity(NRM[0]) || double.IsNaN(NRM[0]))
+                            continue;
 
-                    Thread.Sleep(time);
-                }
+                        var color = GenerateColor(NRM);
+                        ColorGenerated?.Invoke(this, new GenericEventArgs<RGB>(color));
 
-                FFTProvider.StopRecording();
-            }, TokenSource.Token);
-            RunningTask.Start();
+                        Thread.Sleep(time);
+                    }
+
+                    IsRunning = false;
+                    FFTProvider.StopRecording();
+                }, TokenSource.Token);
+                RunningTask.Start();
+            }
         }
 
         /// <summary>
