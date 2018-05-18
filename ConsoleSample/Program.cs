@@ -1,6 +1,6 @@
 ﻿using System;
 using FFTtoRGB;
-using FFTtoRGB.FFT;
+using FFTtoRGB.Color;
 
 namespace ConsoleSample
 {
@@ -8,16 +8,15 @@ namespace ConsoleSample
     {
         static void Main(string[] args)
         {
-            var config = new FFTProviderConfig();
-            var generator = new RGBGenerator(config)
-            {
-                Settings = new FFTtoRGB.Color.ColorSettings(FFTtoRGB.Color.Order.BRG)
-            };
+            var generator = new RGBGenerator();
+            generator.ColorGenerated += OnColorGenerated;
             
             generator.Run();                        
 
             Console.ReadKey(true);
             generator.Stop();
         }
+
+        private static void OnColorGenerated(object sender, GenericEventArgs<RGB> e) => Console.WriteLine(e.Data);
     }
 }

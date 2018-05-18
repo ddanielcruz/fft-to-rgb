@@ -128,10 +128,10 @@ namespace FFTtoRGB
                     var color = GenerateColor(NRM);
                     ColorGenerated?.Invoke(this, new GenericEventArgs<RGB>(color));
 
-                    // TODO Send the generated color to Arduino
-
                     Thread.Sleep(time);
                 }
+
+                FFTProvider.StopRecording();
             }, TokenSource.Token);
             RunningTask.Start();
         }
