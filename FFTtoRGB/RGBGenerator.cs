@@ -70,6 +70,11 @@ namespace FFTtoRGB
         }
 
         /// <summary>
+        /// Max value generated during the process
+        /// </summary>
+        private double MaxValue { get; set; } = 0;
+
+        /// <summary>
         /// Calculate the RGB color based on the FFT array
         /// </summary>
         /// <param name="FFT">FFT double array</param>
@@ -78,19 +83,20 @@ namespace FFTtoRGB
         {
             // TODO Improve A LOT the generate method
             // TODO Implement color base values (RGB)
-
             int pX = (int)Math.Floor(FFT.Length * Settings.X);
             int pY = (int)Math.Floor(FFT.Length * Settings.Y);
 
-            // Sub arrays
-            var X = Calc.SubArray(FFT, 0, pX);
-            var Y = Calc.SubArray(FFT, pX, pY - pX);
-            var Z = Calc.SubArray(FFT, pY, FFT.Length - pY);
+            // Sub arrays sum
+            var X = Calc.SubArray(FFT, 0, pX).Sum();
+            var Y = Calc.SubArray(FFT, pX, pY - pX).Sum();
+            var Z = Calc.SubArray(FFT, pY, FFT.Length - pY).Sum();
 
-            // Map the values
-            var mX = (int)Math.Ceiling(X.Average().Map(0, X.Max(), 0, 255));
-            var mY = (int)Math.Ceiling(Y.Average().Map(0, Y.Max(), 0, 255));
-            var mZ = (int)Math.Ceiling(Z.Average().Map(0, Z.Max(), 0, 255));
+            // Get max value
+            var max = new double[] { X, Y, Z }.Max();
+            
+            var mX = (int)Math.Ceiling(X.Map(0, max, 0, 255));
+            var mY = (int)Math.Ceiling(Y.Map(0, max, 0, 255));
+            var mZ = (int)Math.Ceiling(Z.Map(0, max, 0, 255));
 
             return new RGB(mX, mY, mZ, Settings.Order);
         }
@@ -110,7 +116,7 @@ namespace FFTtoRGB
             var RunningTask = new Task(() =>
             {
                 FFTProvider.StartRecording();
-                var time = (int)(FFTProvider.BufferSize / (double)FFTProvider.Rate * 1000);
+                var time = 50;
 
                 while (!TokenSource.IsCancellationRequested)
                 {
