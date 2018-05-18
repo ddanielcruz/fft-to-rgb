@@ -81,6 +81,7 @@ namespace FFTtoRGB
         /// <returns>Generated RGB color</returns>
         public RGB GenerateColor(double[] FFT)
         {
+            // TODO Improve A LOT the generate method
             int pX = (int)Math.Floor(FFT.Length * Settings.X);
             int pY = (int)Math.Floor(FFT.Length * Settings.Y);
 
