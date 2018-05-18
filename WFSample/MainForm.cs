@@ -17,9 +17,6 @@ namespace WFSample
 
             Generator = new RGBGenerator();
             Generator.ColorGenerated += OnColorGenerated;
-
-            scrollX.Value = 33;
-            scrollY.Value = 66;
         }
 
         private void OnStartClicked(object sender, EventArgs e) => Generator.Run();
@@ -51,20 +48,20 @@ namespace WFSample
             panel.BackColor = Color.FromArgb(color.Red, color.Green, color.Blue);
         }        
 
-        private void OnXScroll(object sender, ScrollEventArgs e)
+        private void OnXValueChanged(object sender, EventArgs e)
         {
-            if (e.NewValue > scrollY.Value)
-                scrollX.Value = e.OldValue;
-            else
+            if (scrollX.Value <= scrollY.Value)
                 Generator.Settings.X = scrollX.Value / 100.0;
+            else
+                scrollX.Value = scrollY.Value;
         }
 
-        private void OnYScroll(object sender, ScrollEventArgs e)
+        private void OnYValueChanged(object sender, EventArgs e)
         {
-            if (e.NewValue < scrollX.Value)
-                scrollY.Value = e.OldValue;
-            else
+            if (scrollY.Value >= scrollX.Value)
                 Generator.Settings.Y = scrollY.Value / 100.0;
+            else
+                scrollY.Value = scrollX.Value;
         }
     }
 }

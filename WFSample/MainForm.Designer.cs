@@ -93,7 +93,8 @@
             this.scrollX.Name = "scrollX";
             this.scrollX.Size = new System.Drawing.Size(325, 27);
             this.scrollX.TabIndex = 4;
-            this.scrollX.Scroll += new System.Windows.Forms.ScrollEventHandler(this.OnXScroll);
+            this.scrollX.Value = 33;
+            this.scrollX.ValueChanged += new System.EventHandler(this.OnXValueChanged);
             // 
             // scrollY
             // 
@@ -102,7 +103,8 @@
             this.scrollY.Name = "scrollY";
             this.scrollY.Size = new System.Drawing.Size(325, 27);
             this.scrollY.TabIndex = 5;
-            this.scrollY.Scroll += new System.Windows.Forms.ScrollEventHandler(this.OnYScroll);
+            this.scrollY.Value = 66;
+            this.scrollY.ValueChanged += new System.EventHandler(this.OnYValueChanged);
             // 
             // MainForm
             // 
