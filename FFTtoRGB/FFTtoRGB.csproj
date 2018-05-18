@@ -66,6 +66,7 @@
     <Compile Include="FFT\FFTProvider.cs" />
     <Compile Include="Calc.cs" />
     <Compile Include="FFT\SampleTakeMeasure.cs" />
+    <Compile Include="GenericEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RGBGenerator.cs" />
   </ItemGroup>

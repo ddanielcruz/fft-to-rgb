@@ -4,7 +4,6 @@ using FFTtoRGB.FFT;
 using FFTtoRGB.Color;
 using System.Threading.Tasks;
 using System.Threading;
-using System.Diagnostics;
 
 namespace FFTtoRGB
 {
@@ -13,6 +12,11 @@ namespace FFTtoRGB
     /// </summary>
     public class RGBGenerator
     {
+        /// <summary>
+        /// Color generated event
+        /// </summary>
+        public event EventHandler<GenericEventArgs<RGB>> ColorGenerated;
+
         /// <summary>
         /// FFT Provider
         /// </summary>
@@ -87,7 +91,7 @@ namespace FFTtoRGB
 
             var max = (new double[] { X, Y, Z }).Max();
             if (max > MaxValue)
-                MaxValue = max;            
+                MaxValue = max;
 
             // Map the values
             var mX = (int)Math.Ceiling(X.Map(0, MaxValue, 0, 255));
@@ -121,24 +125,20 @@ namespace FFTtoRGB
                     if (double.IsInfinity(NRM[0]) || double.IsNaN(NRM[0]))
                         continue;
 
-                    try
-                    {
-                        var color = GenerateColor(NRM);
-                        Console.WriteLine(color);
-                        
-                        // TODO Send the generated color to Arduino
-                    }
-                    catch (InvalidColorValueException)
-                    {
-                        // TODO Fix Exception
-                        break;
-                    }
+                    var color = GenerateColor(NRM);
+                    ColorGenerated?.Invoke(this, new GenericEventArgs<RGB>(color));
+
+                    // TODO Send the generated color to Arduino
+
                     Thread.Sleep(time);
                 }
             }, TokenSource.Token);
             RunningTask.Start();
         }
 
+        /// <summary>
+        /// Stop generating colors
+        /// </summary>
         public void Stop() => TokenSource.Cancel();
     }
 }
