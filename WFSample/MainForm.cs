@@ -18,7 +18,7 @@ namespace WFSample
             var config = new FFTProviderConfig { SampleTake = SampleTakeMeasure.Quarter };
             Generator = new RGBGenerator(config)
             {
-                Settings = new ColorSettings(Order.RGB, 0.05, 0.6)
+                Settings = new ColorSettings(Order.BRG, 0.05, 0.6)
             };
             Generator.ColorGenerated += OnColorGenerated;
         }
