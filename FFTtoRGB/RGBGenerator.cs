@@ -32,6 +32,9 @@ namespace FFTtoRGB
         /// </summary>
         private double[] Frequencies { get; set; }
 
+        /// <summary>
+        /// Boolean to stop more than one running thread
+        /// </summary>
         private bool IsRunning { get; set; } = false;
 
         /// <summary>
@@ -78,8 +81,6 @@ namespace FFTtoRGB
         /// <returns>Generated RGB color</returns>
         public RGB GenerateColor(double[] FFT)
         {
-            // TODO Improve A LOT the generate method
-            // TODO Implement color base values (RGB)
             int pX = (int)Math.Floor(FFT.Length * Settings.X);
             int pY = (int)Math.Floor(FFT.Length * Settings.Y);
 
@@ -90,7 +91,7 @@ namespace FFTtoRGB
 
             // Get max value
             var max = new double[] { X, Y, Z }.Max();
-            
+
             var mX = (int)Math.Ceiling(X.Map(0, max, 0, 255));
             var mY = (int)Math.Ceiling(Y.Map(0, max, 0, 255));
             var mZ = (int)Math.Ceiling(Z.Map(0, max, 0, 255));
