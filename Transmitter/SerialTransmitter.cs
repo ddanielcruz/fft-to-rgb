@@ -4,9 +4,9 @@ using System.IO.Ports;
 namespace Transmitter
 {
     /// <summary>
-    /// Class to send data to the arduino
+    /// Class to send data to the arduino by serial
     /// </summary>
-    public class ArduinoTransmitter
+    public class SerialTransmitter
     {
         /// <summary>
         /// Serial Port to communicate
@@ -18,7 +18,7 @@ namespace Transmitter
         /// </summary>
         private bool IsOpen { get; set; } = false;
 
-        public ArduinoTransmitter(string portName, int baudRate = 9600) => Serial = new SerialPort(portName, baudRate);
+        public SerialTransmitter(string portName, int baudRate = 9600) => Serial = new SerialPort(portName, baudRate);
 
         /// <summary>
         /// Open connection
