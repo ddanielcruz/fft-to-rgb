@@ -1,29 +1,15 @@
 // Controllers
 int type  = 0;
-int index = 0;
 int value = 0;
 
-// Color class
-class Color
-{
-  public:
-    int Red;
-    int Green;
-    int Blue;
-
-    Color()
-    {
-      Red = Green = Blue = 0;
-    }
-};
-
-// Generated Color
-Color* color;
+// Color
+int red = 0;
+int green = 0;
+int blue = 0;
 
 void setup()
 {
   Serial.begin(9600);
-  color = new Color();
 }
 
 void loop()
@@ -39,17 +25,17 @@ void SetColor()
 {
   if (type == 0)
   {
-    color->Red = value;
+    red = value;
     type++;
   }
   else if (type == 1)
   {
-    color->Green = value;
+    green = value;
     type++;
   }
   else
   {
-    color->Blue = value;
+    blue = value;
     type = 0;
     
     // TODO set leds to color
