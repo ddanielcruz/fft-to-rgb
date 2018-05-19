@@ -35,6 +35,7 @@ namespace WFSample
                 if (!string.IsNullOrWhiteSpace(BaudText))
                     baudRate = Convert.ToInt32(BaudText);
 
+                // TODO Check it this port belongs to an Arduino
                 _transmitter = new SerialTransmitter(port, baudRate);
                 OnSuccess?.Invoke(this, new GenericEventArgs<SerialTransmitter>(_transmitter));
                 Close();

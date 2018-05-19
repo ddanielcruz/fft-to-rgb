@@ -30,6 +30,12 @@ namespace WFSample
             demoPanel.BackColor = Color.FromArgb(color.Red, color.Green, color.Blue);
 
             // TODO Send data to Arduino
+            if (IsConfigured && Transmitter.IsOpen)
+            {
+                Transmitter.Write((byte)e.Data.Red);
+                Transmitter.Write((byte)e.Data.Green);
+                Transmitter.Write((byte)e.Data.Blue);
+            }
         }
 
         // Generator Start and Stop
@@ -86,9 +92,16 @@ namespace WFSample
 
         private void OnSuccess(object sender, GenericEventArgs<SerialTransmitter> e)
         {
+            if (Transmitter != null)
+                OnCloseClicked(null, null);            
+            else
+            {
+                IsConfigured = true;
+                btnOpen.Enabled = true;
+                btnClose.Enabled = true;
+            }
+
             Transmitter = e.Data;
-            btnOpen.Enabled = true;
-            btnClose.Enabled = true;
         }
     }
 }
