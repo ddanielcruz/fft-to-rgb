@@ -74,6 +74,9 @@ namespace FFTtoRGB
             return data;
         }
 
+        public double Max { get; set; } = double.MinValue;
+        public double Min { get; set; } = double.MaxValue;
+
         /// <summary>
         /// Calculate the RGB color based on the FFT array
         /// </summary>
@@ -84,17 +87,46 @@ namespace FFTtoRGB
             int pX = (int)Math.Floor(FFT.Length * Settings.X);
             int pY = (int)Math.Floor(FFT.Length * Settings.Y);
 
-            // Sub arrays sum
-            var X = Calc.SubArray(FFT, 0, pX).Sum();
-            var Y = Calc.SubArray(FFT, pX, pY - pX).Sum();
-            var Z = Calc.SubArray(FFT, pY, FFT.Length - pY).Sum();
+            // Sub Arrays
+            var aX = Calc.SubArray(FFT, 0, pX);
+            var aY = Calc.SubArray(FFT, pX, pY - pX);
+            var aZ = Calc.SubArray(FFT, pY, FFT.Length - pY);
 
+            // Sub Arrays Average
+            double X = 0, Y = 0, Z = 0;
+            double[] values = new double[3];
+
+            if (aX.Length > 0)
+            {
+                X = aX.Sum();
+                values[0] = X;
+            }
+
+            if (aY.Length > 0)
+            {
+                Y = aY.Sum();
+                values[1] = Y;
+            }
+
+            if (aZ.Length > 0)
+            {
+                Z = aZ.Sum();
+                values[2] = Z;
+            }
+
+            // Get min value
+            var min = values.Min();
+            if (min < Min)
+                Min = min;
+            
             // Get max value
-            var max = new double[] { X, Y, Z }.Max();
+            var max = values.Max();
+            if (max > Max)
+                Max = max;
 
-            var mX = (int)Math.Ceiling(X.Map(0, max, 0, 255));
-            var mY = (int)Math.Ceiling(Y.Map(0, max, 0, 255));
-            var mZ = (int)Math.Ceiling(Z.Map(0, max, 0, 255));
+            var mX = (aX.Length > 0) ? (int)Math.Ceiling(X.Map(Min, Max, 96, 255)) : 0;
+            var mY = (aY.Length > 0) ? (int)Math.Ceiling(Y.Map(Min, Max, 96, 255)) : 0;
+            var mZ = (aZ.Length > 0) ? (int)Math.Ceiling(Z.Map(Min, Max, 96, 255)) : 0;
 
             return new RGB(mX, mY, mZ, Settings.Order);
         }
@@ -117,7 +149,7 @@ namespace FFTtoRGB
                 {
                     IsRunning = true;
                     FFTProvider.StartRecording();
-                    var time = 50;
+                    var time = 80;
 
                     while (!TokenSource.IsCancellationRequested)
                     {
