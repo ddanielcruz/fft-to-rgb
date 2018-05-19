@@ -51,6 +51,7 @@ void setup()
 
 void loop()
 {
+  // TODO receive just one byte instead of three representing an int
   if (Serial.available() > 0)
   {
     switch (Serial.peek())
