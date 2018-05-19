@@ -16,7 +16,7 @@ namespace Transmitter
         /// <summary>
         /// Whether the connection is open or not
         /// </summary>
-        private bool IsOpen { get; set; } = false;
+        public bool IsOpen { get; private set; } = false;
 
         public SerialTransmitter(string portName, int baudRate = 9600) => Serial = new SerialPort(portName, baudRate);
 
