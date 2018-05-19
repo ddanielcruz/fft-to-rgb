@@ -25,8 +25,15 @@ namespace Transmitter
         /// </summary>
         public void Open()
         {
-            Serial.Open();
-            IsOpen = true;
+            try
+            {
+                Serial.Open();
+                IsOpen = true;
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                throw e;
+            }
         }
 
         /// <summary>
@@ -36,6 +43,22 @@ namespace Transmitter
         {
             Serial.Close();
             IsOpen = false;
+        }
+
+        /// <summary>
+        /// Write value in the serial
+        /// </summary>
+        /// <param name="value">Value to be written</param>
+        public void Write(byte value)
+        {
+            try
+            {
+                Serial.Write(value.ToString());
+            }
+            catch (InvalidOperationException e)
+            {
+                throw e;
+            }
         }
     }
 }
