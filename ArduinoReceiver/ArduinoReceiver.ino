@@ -1,16 +1,5 @@
-// Settings
-// Start and end chars
-const char chStart = '[';
-const char chEnd = ']';
-
-// Types
-const char rT = 'R';
-const char gT = 'G';
-const char bT = 'B';
-
 // Controllers
-char buf[4];
-char type;
+int type  = 0;
 int index = 0;
 int value = 0;
 
@@ -23,18 +12,6 @@ class Color
     int Blue;
 
     Color()
-    {
-      Red = Green = Blue = 0;
-    }
-
-    Color(int red, int green, int blue)
-    {
-      Red = red;
-      Green = green;
-      Blue = blue;
-    }
-
-    void reset()
     {
       Red = Green = Blue = 0;
     }
@@ -51,48 +28,30 @@ void setup()
 
 void loop()
 {
-  // TODO receive just one byte instead of three representing an int
   if (Serial.available() > 0)
   {
-    switch (Serial.peek())
-    {
-      case chStart:
-        Start();
-        break;
-      
-      case rT: case gT: case bT:
-        type = Serial.read();
-        break;
-
-      case chEnd:
-        Serial.read();
-        value = atoi(buf);
-        SetColor();
-        break;
-
-      default:
-        buf[index++] = Serial.read();
-        buf[index] = '\n';
-    }
+    value = Serial.read();
+    SetColor();
   }
-}
-
-void Start()
-{
-  index = 0;
-  color->reset();
-  Serial.read();
 }
 
 void SetColor()
 {
-  if (type == 'R')
+  if (type == 0)
+  {
     color->Red = value;
-  else if (type == 'G')
+    type++;
+  }
+  else if (type == 1)
+  {
     color->Green = value;
+    type++;
+  }
   else
   {
     color->Blue = value;
+    type = 0;
+    
     // TODO set leds to color
   }
 }
