@@ -10,6 +10,8 @@ namespace WFSample
     public partial class MainForm : Form
     {
         private SerialTransmitter Transmitter { get; set; }
+        private bool IsConfigured { get; set; } = false;
+
         private RGBGenerator Generator { get; set; }
 
         public MainForm()
@@ -59,5 +61,34 @@ namespace WFSample
         private void GBRChecked(object sender, EventArgs e) => Generator.Settings.Order = Order.GBR;
         private void BRGChecked(object sender, EventArgs e) => Generator.Settings.Order = Order.BRG;
         private void BGRChecked(object sender, EventArgs e) => Generator.Settings.Order = Order.BGR;
+
+        // Arduino
+        private void OnOpenClicked(object sender, EventArgs e)
+        {
+            if (!Transmitter.IsOpen)
+                Transmitter.Open();
+        }
+        private void OnCloseClicked(object sender, EventArgs e)
+        {
+            if (Transmitter.IsOpen)
+                Transmitter.Close();
+        }
+
+        private void OnConfigureClicked(object sender, EventArgs e)
+        {
+            var form = new Settings();
+            form.OnSuccess += OnSuccess;
+            form.FormClosed += (s, ev) => Enabled = true;
+
+            Enabled = false;
+            form.Show();
+        }
+
+        private void OnSuccess(object sender, GenericEventArgs<SerialTransmitter> e)
+        {
+            Transmitter = e.Data;
+            btnOpen.Enabled = true;
+            btnClose.Enabled = true;
+        }
     }
 }

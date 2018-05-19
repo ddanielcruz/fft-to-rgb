@@ -33,7 +33,6 @@ namespace ConsoleSample
                 Console.WriteLine(e.Message);
             }
 
-
             Console.WriteLine("Press any key to leave...");
             Console.ReadKey(true);
 

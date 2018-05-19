@@ -90,10 +90,12 @@
             this.btnConfigure.TabIndex = 3;
             this.btnConfigure.Text = "Configurate";
             this.btnConfigure.UseVisualStyleBackColor = false;
+            this.btnConfigure.Click += new System.EventHandler(this.OnConfigureClicked);
             // 
             // btnClose
             // 
             this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(51)))), ((int)(((byte)(63)))));
+            this.btnClose.Enabled = false;
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnClose.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnClose.Location = new System.Drawing.Point(3, 78);
@@ -102,10 +104,12 @@
             this.btnClose.TabIndex = 2;
             this.btnClose.Text = "Close Connection";
             this.btnClose.UseVisualStyleBackColor = false;
+            this.btnClose.Click += new System.EventHandler(this.OnCloseClicked);
             // 
             // btnOpen
             // 
             this.btnOpen.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(51)))), ((int)(((byte)(63)))));
+            this.btnOpen.Enabled = false;
             this.btnOpen.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnOpen.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnOpen.Location = new System.Drawing.Point(3, 21);
@@ -114,6 +118,7 @@
             this.btnOpen.TabIndex = 1;
             this.btnOpen.Text = "Open Connection";
             this.btnOpen.UseVisualStyleBackColor = false;
+            this.btnOpen.Click += new System.EventHandler(this.OnOpenClicked);
             // 
             // panel2
             // 
