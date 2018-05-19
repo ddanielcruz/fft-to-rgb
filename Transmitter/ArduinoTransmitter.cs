@@ -51,14 +51,19 @@ namespace Transmitter
         /// <param name="value">Value to be written</param>
         public void Write(byte value)
         {
-            try
+            if (IsOpen)
             {
-                Serial.Write(value.ToString());
+                try
+                {
+                    Serial.Write(value.ToString());
+                }
+                catch (InvalidOperationException e)
+                {
+                    throw e;
+                }
             }
-            catch (InvalidOperationException e)
-            {
-                throw e;
-            }
+            else
+                throw new Exception("The connection is closed.");
         }
     }
 }
