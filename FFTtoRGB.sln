@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transmitter", "Transmitter\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleSample", "ConsoleSample\ConsoleSample.csproj", "{7DE45EAA-AA92-4196-9FC2-E57C76C0EC3E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{D96F79DE-EC51-430A-B9AD-34BD4B480825}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,6 +92,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B39A5607-73CB-4A3F-8825-3C4ABAE59726} = {D96F79DE-EC51-430A-B9AD-34BD4B480825}
+		{7DE45EAA-AA92-4196-9FC2-E57C76C0EC3E} = {D96F79DE-EC51-430A-B9AD-34BD4B480825}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3D72782B-26E7-44C4-B0E7-6BCB3639F639}
