@@ -49,6 +49,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FFTtoRGB\FFTtoRGB.csproj">
+      <Project>{e16c1218-38f6-4ade-a9e9-897af2ceb463}</Project>
+      <Name>FFTtoRGB</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Transmitter\Transmitter.csproj">
       <Project>{c36a598b-f5d5-48cf-9a0e-bcfc4c3193d0}</Project>
       <Name>Transmitter</Name>

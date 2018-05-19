@@ -86,5 +86,15 @@ namespace Transmitter
             else
                 throw new Exception("The connection is closed.");
         }
+
+        /// <summary>
+        /// Set all LEDs to zero
+        /// </summary>
+        public void Clear()
+        {
+            Write(0);
+            Write(0);
+            Write(0);
+        }
     }
 }
