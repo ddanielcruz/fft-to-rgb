@@ -1,15 +1,15 @@
-# Using audio to animate a RGB LED strip
+<div align="center">
+  <h1>
+    :notes: <i>fft-to-rgb</i>
+  </h1>
 
-The idea of this project is to animate a RGB LED strip accordingly to what music we are listening to.
+  <p>
+    Animate a RGB Led strip using C# and Arduino
+  </p>
+</div>
 
-Basically, our algorithm captures the audio coming from the sound card of a computer, analyzes it using the [Fast Fourier Transform (FFT)](https://en.wikipedia.org/wiki/Fast_Fourier_transform) algorithm, converts data from specific frequencies previously configured by us and the amplitude of the sound in color patterns and luminous intensity and, finally, send the converted data via USB/Wi-Fi to an [Arduino UNO](https://store.arduino.cc/usa/arduino-uno-rev3) connected in a circuit with [MOSFETs](https://en.wikipedia.org/wiki/MOSFET).
-
-## To Do
-
-- [ ] Create a simple .NET library for working with this functionality
-- [ ] Write a better little wiki explaining how it works
-- [ ] Upload some medias showing it working
+The idea of this project is to animate a RGB Led strip according to what music we are listening to. It basically captures the audio coming from the sound card of a computer, analyze it using the [Fast Fourier Transform (FFT)](https://en.wikipedia.org/wiki/Fast_Fourier_transform) algorithm, converts data from specific frequencies previously configured by us and the amplitude of the sound in color patterns and luminous intensity and, finally, send the converted data via USB/Wi-Fi to an [Arduino UNO](https://store.arduino.cc/usa/arduino-uno-rev3) connected in a circuit with [MOSFETs](https://en.wikipedia.org/wiki/MOSFET).
 
 ## License
 
-MIT License.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
